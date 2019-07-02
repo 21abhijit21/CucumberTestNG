@@ -1,0 +1,94 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'Prudential-BDD-Demo'
+version = '0.0.1-SNAPSHOT'
+
+description = """"""
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.4"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'io.qameta.allure'
+apply plugin: 'war'  
+
+allure {
+    version = '2.4.1'
+    aspectjweaver = true
+    autoconfigure = true
+        useTestNG {
+       version = '2.0-BETA10'   
+    }
+    }
+
+
+compileJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+repositories {
+        
+     maven { url "testdata" }
+}
+dependencies {
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'3.141.59'
+    //compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'3.11.0'
+    compile group: 'io.appium', name: 'java-client', version:'4.1.2'
+    compile group: 'org.apache.poi', name: 'poi', version:'3.17'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version:'3.17'
+    compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version:'2.6.10'
+    compile group: 'com.relevantcodes', name: 'extentreports', version:'2.41.2'
+    //compile group: 'com.google.guava', name: 'guava', version:'23.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.24'
+    compile group: 'com.ibm.informix', name: 'jdbc', version: '4.10.9'
+    compile group: 'io.cucumber', name: 'cucumber-core', version: '4.4.0'
+    compile group: 'io.cucumber', name: 'cucumber-java8', version: '4.4.0' 
+    implementation ('io.cucumber:cucumber-testng:4.4.0'){
+    exclude group: 'org.testng'
+    }
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    compile group: 'com.beust', name: 'jcommander', version: '1.72'
+    compile group: 'net.sf.supercsv', name: 'super-csv', version:'2.1.0'
+    compile group: 'io.rest-assured', name: 'json-path', version:'3.0.0'
+    compile group: 'io.rest-assured', name: 'xml-path', version:'3.0.3'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version:'1.1'
+    compile group: 'org.json', name: 'json', version:'20170516'
+//    compile group: 'com.qmetry', name: 'qaf', version: '2.1.14'
+    compile group: 'org.testng', name: 'testng', version:'6.9.6'
+//    testCompile group: 'io.cucumber', name: 'cucumber-testng', version: '4.4.0'
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version:'3.0.3'
+    testCompile group: 'io.rest-assured', name: 'json-schema-validator', version:'3.0.3'
+    testCompile group: 'io.rest-assured', name: 'spring-mock-mvc', version:'3.0.3'
+    testCompile group: 'io.rest-assured', name: 'scala-support', version:'3.0.3'
+    testCompile group: 'com.jayway.restassured', name: 'rest-assured', version:'1.6'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+}
+
+ext{
+    if (!project.hasProperty('suiteFile')) {
+        suiteFile = 'testng.xml'
+    }
+}
+
+test{
+	useTestNG(){
+	dependsOn cleanTest
+ 		suites suiteFile
+ 	}
+}
