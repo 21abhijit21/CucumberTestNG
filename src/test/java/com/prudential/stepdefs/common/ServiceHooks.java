@@ -13,7 +13,9 @@ public class ServiceHooks {
     public void initializeWebTest(){
    	String browser= System.getProperty("browser","chrome");
    	String RunEnv = System.getProperty("RunEnv","localhost");
-        DriverManager.initiateWebDriver(browser,RunEnv);
+   	String GRID_HUB_IP = System.getProperty("GRID_HUB_IP","localhost");
+   	String Port = System.getProperty("Port","4444");
+        DriverManager.initiateWebDriver(browser,RunEnv,GRID_HUB_IP,Port);
     }
 
     @Before("@API")

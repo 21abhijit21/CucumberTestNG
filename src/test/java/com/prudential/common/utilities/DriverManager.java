@@ -45,7 +45,7 @@ public class DriverManager {
      * Initiates a new instance of Remote WebDriver.
      */
     @SuppressWarnings("deprecation")
-	public static void initiateWebDriver(String Browser,String RunEnv) {
+	public static void initiateWebDriver(String Browser,String RunEnv,String GRID_HUB_IP,String Port) {
     	if (Browser.equalsIgnoreCase("Chrome")) {
     	//Grid on Jenkins
     		Map<String, Object> prefs = new HashMap<String, Object>();
@@ -62,7 +62,7 @@ public class DriverManager {
     	options.setExperimentalOption("prefs", prefs);
     	capabilities.setCapability(ChromeOptions.CAPABILITY, options);
     	if(!RunEnv.equalsIgnoreCase("localhost")) {
-        String hubAddress = "http://" + Config.GRID_HUB_IP + ":" + Config.GRID_HUB_PORT + "/wd/hub";
+        String hubAddress = "http://" + GRID_HUB_IP + ":" + Port + "/wd/hub";
         try {
         		setWebDriver(new RemoteWebDriver(new URL(hubAddress), capabilities));
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class DriverManager {
  //   	options.addCapabilities(capabilities);
 //    	options.addArguments("start-maximized");
     	if(!RunEnv.equalsIgnoreCase("localhost")) {
-        String hubAddress = "http://" + Config.GRID_HUB_IP + ":" + Config.GRID_HUB_PORT + "/wd/hub";
+        String hubAddress = "http://" + GRID_HUB_IP + ":" + Port + "/wd/hub";
         try {
         		setWebDriver(new RemoteWebDriver(new URL(hubAddress), capabilities));
         } catch (Exception e) {
