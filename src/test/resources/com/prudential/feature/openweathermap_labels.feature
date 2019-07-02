@@ -15,17 +15,8 @@ Then all Header labels should be accurately displayed
 And all Body labels should be accurately displayed
 
 
-@WebTests
-Scenario Outline: Title of your scenario outline
-Given User is on Home Page for "OpenWeatherMap" App
-When I search for an invalid <City>
-Then appropriate <Error> should be displayed
-
-Examples:
-    | City    |   Error   |
-    | Invalid | Not found |
     
-@WebTests
+@WebTests 
 Scenario Outline: Search For Invalid City To Validate Error message
 Given User is on Home Page for "OpenWeatherMap" App
 When I search for an invalid <City>
@@ -39,7 +30,7 @@ Examples:
 Scenario Outline: Search For Valid City To Validate Error message
 Given User is on Home Page for "OpenWeatherMap" App
 When I search for a valid <City>
-Then Reults should be displayed for Search
+Then Reults should be displayed for correct <City>
 
 Examples:
     | City    |

@@ -88,5 +88,11 @@ public class HomePage_Methods {
 		
 	}
 	
+	public void Validate_Search_Results(String City) {
+		WebInteract.waitForVisibility(HomePage.City_Name);
+		asserts.assertTrue(HomePage.City_Name.getText().contains(City), "Search Result is displayed for correct City");
+		asserts.assertAll();
+	}
+	
 	
 }

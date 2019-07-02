@@ -81,6 +81,9 @@ public class HomePage {
 	@FindBy(xpath=".//*[@class='widget__graphic']/span/form/ul/li/a[contains(text(),'Map')]")
 	public WebElement WidgetTabMap;
 	
+	@FindBy(xpath=".//*[@class='weather-widget__city-name']")
+	public WebElement City_Name;
+	
 	public HomePage() {
 		PageFactory.initElements(DriverManager.getWebDriver(), this);
 	}

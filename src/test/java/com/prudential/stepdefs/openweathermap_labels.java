@@ -48,6 +48,18 @@ public class openweathermap_labels implements En{
 		    // Write code here that turns the phrase above into concrete actions
 			SearchResults_Methods.validate_invalid_search_result(arg1);
 		});
+		
+		When("I search for a valid (.*)", (String arg1) -> {
+		    // Write code here that turns the phrase above into concrete actions
+			HomePage_Methods.search_city(arg1);
+		});
+
+		Then("Reults should be displayed for correct (.*)", (String arg) -> {
+		    // Write code here that turns the phrase above into concrete actions
+			SearchResults_Methods.validate_valid_search_result(arg);
+			HomePage_Methods.Validate_Search_Results(arg);
+			
+		});
 	}
 
 	

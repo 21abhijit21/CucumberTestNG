@@ -12,7 +12,8 @@ public class ServiceHooks {
     @Before("@WebTests")
     public void initializeWebTest(){
    	String browser= System.getProperty("browser","chrome");
-        DriverManager.initiateWebDriver(browser);
+   	String RunEnv = System.getProperty("RunEnv","localhost");
+        DriverManager.initiateWebDriver(browser,RunEnv);
     }
 
     @Before("@API")

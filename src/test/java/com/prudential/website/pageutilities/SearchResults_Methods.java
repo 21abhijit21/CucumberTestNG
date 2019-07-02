@@ -1,6 +1,8 @@
 package com.prudential.website.pageutilities;
 
 import org.testng.asserts.SoftAssert;
+
+import com.prudential.common.utilities.DriverManager;
 import com.prudential.common.utilities.Logger;
 import com.prudential.common.utilities.WebInteract;
 import com.prudential.website.pagefactory.SearchResultsPage;
@@ -24,4 +26,17 @@ public class SearchResults_Methods {
 		asserts.assertAll();
 	}
 
+	public void validate_valid_search_result(String City){
+		
+		WebInteract.waitForVisibility(SearchResultsPage.SearchResultsPage);
+		int result_count = SearchResultsPage.ResultsTable.size();
+		for(int i=0;i<result_count;i++) {
+			if(SearchResultsPage.ResultsTable.get(i).getText().contains(City))
+				SearchResultsPage.ResultsTable.get(i).click();
+			Logger.logMessage("Clicked on Matching Search Result");
+			break;
+		}
+		WebInteract.waitForPageLoad(DriverManager.getWebDriver());
+		asserts.assertAll();
+	}
 }

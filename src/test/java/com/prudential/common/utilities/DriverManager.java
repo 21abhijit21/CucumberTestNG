@@ -3,12 +3,15 @@ package com.prudential.common.utilities;
 import static org.testng.Assert.fail;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -42,9 +45,11 @@ public class DriverManager {
      * Initiates a new instance of Remote WebDriver.
      */
     @SuppressWarnings("deprecation")
-	public static void initiateWebDriver(String platform) {
-    	if (platform.equalsIgnoreCase("Chrome")) {
+	public static void initiateWebDriver(String Browser,String RunEnv) {
+    	if (Browser.equalsIgnoreCase("Chrome")) {
     	//Grid on Jenkins
+    		Map<String, Object> prefs = new HashMap<String, Object>();
+    	    prefs.put("profile.managed_default_content_settings.geolocation", 2);
     	DesiredCapabilities capabilities = DesiredCapabilities.chrome(); 
     		capabilities.setPlatform(Platform.WINDOWS);
     	
@@ -54,8 +59,9 @@ public class DriverManager {
     	ChromeOptions options = new ChromeOptions();
     	options.addArguments("start-maximized");
     	options.addArguments("incognito");
+    	options.setExperimentalOption("prefs", prefs);
     	capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-    	if(!Config.GRID_HUB_IP.equalsIgnoreCase("localhost")) {
+    	if(!RunEnv.equalsIgnoreCase("localhost")) {
         String hubAddress = "http://" + Config.GRID_HUB_IP + ":" + Config.GRID_HUB_PORT + "/wd/hub";
         try {
         		setWebDriver(new RemoteWebDriver(new URL(hubAddress), capabilities));
@@ -64,7 +70,7 @@ public class DriverManager {
             e.printStackTrace();
         }
     	}
-        else if (Config.GRID_HUB_IP.equalsIgnoreCase("localhost")) {
+        else if (RunEnv.equalsIgnoreCase("localhost")) {
         	try {
         		System.setProperty("webdriver.chrome.driver", "Resources/Drivers/chromedriver.exe");
         		setWebDriver(new ChromeDriver(capabilities));
@@ -80,11 +86,11 @@ public class DriverManager {
         
         
     }
-    else if(platform.equalsIgnoreCase("firefox")) {
+    else if(Browser.equalsIgnoreCase("firefox")) {
     	//Grid on Jenkins
     	DesiredCapabilities capabilities = DesiredCapabilities.firefox(); 
     	
-    	if(!Config.GRID_HUB_IP.equalsIgnoreCase("localhost"))
+    	
    		capabilities.setPlatform(Platform.WINDOWS);
     	capabilities.setCapability (CapabilityType.ACCEPT_SSL_CERTS, true);
     	capabilities.setCapability (CapabilityType.ACCEPT_INSECURE_CERTS, true);
@@ -92,7 +98,7 @@ public class DriverManager {
     	FirefoxOptions options = new FirefoxOptions().setLegacy(false);;
  //   	options.addCapabilities(capabilities);
 //    	options.addArguments("start-maximized");
-  
+    	if(!RunEnv.equalsIgnoreCase("localhost")) {
         String hubAddress = "http://" + Config.GRID_HUB_IP + ":" + Config.GRID_HUB_PORT + "/wd/hub";
         try {
         		setWebDriver(new RemoteWebDriver(new URL(hubAddress), capabilities));
@@ -100,7 +106,16 @@ public class DriverManager {
             Logger.logConsoleMessage("Session could not be created.");
             e.printStackTrace();
         }
-        
+    	}
+    	else if (RunEnv.equalsIgnoreCase("localhost")) {
+        	try {
+        		System.setProperty("webdriver.gecko.driver", "Resources/Drivers/geckodriver.exe");
+        		setWebDriver(new FirefoxDriver(capabilities));
+        } catch (Exception e) {
+            Logger.logConsoleMessage("Session could not be created.");
+            e.printStackTrace();
+        }
+        }
         if (webDriver == null) {
             Logger.logConsoleMessage("The driver was not properly initiated.");
         }   
